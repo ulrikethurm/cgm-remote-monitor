@@ -1,41 +1,34 @@
-(function () {
-	
-    window.Nightscout = window.Nightscout || {};
+import '../static/css/drawer.css';
+import '../static/css/dropdown.css';
+import '../static/css/sgv.css';
+import '../node_modules/jquery.tipsy/src/jquery.tipsy.css';
 
-	// Default features
 
-    window.Nightscout = {
-        units: require('../lib/units')(),
-        profile: require('../lib/profilefunctions')()
-    };
+$ = require("jquery");
 
-	// Plugins
-	
-	var inherits = require("inherits");
-	var PluginBase = require('../lib/pluginbase'); // Define any shared functionality in this class
+require('jquery-ui-bundle');
 
-    window.NightscoutPlugins = window.NightscoutPlugins || {};
+window._ = require('lodash');
+window.d3 = require('d3');
 
-    window.NightscoutPlugins = {
-        iob: require('../lib/iob')(PluginBase),
-        cob: require('../lib/cob')(PluginBase),
-        bwp: require('../lib/boluswizardpreview')(PluginBase),
-        cage: require('../lib/cannulaage')(PluginBase)
-    };
-	// class inheritance to the plugins from the base + map functions over
+require('jquery.tipsy');
 
-	for (var p in window.NightscoutPlugins) {
-		var plugin = window.NightscoutPlugins[p];
-		inherits(plugin, PluginBase);
-		plugin.name = p;
- 
-		for (var n in PluginBase.prototype) {
-      		var item = PluginBase.prototype[n];                      
-	    	plugin[n] = item;
-  		}
-	}
+window.Storage = require('js-storage');
 
-    console.info("Nightscout bundle ready", window.Nightscout);
+require('flot');
+require('../node_modules/flot/jquery.flot.time');
+require('../node_modules/flot/jquery.flot.pie');
+require('../node_modules/flot/jquery.flot.fillbetween');
 
-})();
+window.moment = require('moment-timezone');
 
+window.Nightscout = window.Nightscout || {};
+
+window.Nightscout = {
+    client: require('../lib/client'),
+    units: require('../lib/units')(),
+    report_plugins: require('../lib/report_plugins/')(),
+    admin_plugins: require('../lib/admin_plugins/')()
+};
+
+console.info('Nightscout bundle ready');
